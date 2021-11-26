@@ -80,7 +80,6 @@ $$
 &emsp;&emsp;在$s$被添加到$m_k$中后，我们尝试找到一个成熟的参考模型$m'_k = \arg min_{m\in M'}\{\lambda_d = |\lambda_m-\lambda|,\lambda_d < g'\}$。$g'$通常被设置的比$g$大$(e.g.,20/s)$，以使成熟模型能够指导更多具有较大到达率差异的情况。只有当 $m_k$是成熟的时候，$m'_k = m_k$。
 
 
-
 ![image-20211126103740591](image/Inverse%20Queuing_FIG_2.png)
 
 <center>图2  在不同容器数量下，不同到达速录的平均响应次数</center>
