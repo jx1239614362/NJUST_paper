@@ -81,10 +81,6 @@ $$
 
 
 
-
-
-
-
 ![image-20211126103740591](image/Inverse%20Queuing_FIG_2.png)
 
 <center>图2  在不同容器数量下，不同到达速录的平均响应次数</center>
