@@ -73,7 +73,7 @@ $$
 
 &emsp;&emsp; 参考点对计算输出误差是至关重要的，它是反馈控制的基础。因为容器是以粗粒度配置的，所以当配置容器的数量被调整时，平均响应时间（称为稳定点）不能平稳变化，如图2所示。因此，给定的$W_{sla}$可能会离稳定点很远，并且直接使用$W_{sla}$作为参考点有可能造成大的波动应从小于$W_{sla}$的稳定点中选取合适的参考响应时间。在图2中，不同到达率的稳定点是不同的，应为每一个到达率单独寻找参考点。对于每一个$\lambda$来说，违反SLA的最大容器数量$n^r$被称为下限，它能够避免释放太多容器。对于每一个$\lambda$来说，不同数量的容器的稳定点可以从历史数据中学习。$W^T$和$n^r$可以从每一个$\lambda$的稳定点上得到。稳定点结合，$W^T$和$n^r$被称为$\lambda$的一个参考模型，其用于直到反馈控制。
 
-![image-20211126103740591](image/Inverse%20Queuing_FIG_2.png)
+![image-20211126103740591](image/Inverse Queuing_FIG_2.png)
 
 <center>图2  在不同容器数量下，不同到达速录的平均响应次数</center>
 
@@ -158,7 +158,7 @@ u_k = u_{k-1}+K'_I \times e_k
 $$
 其中$K'_I = K_I \times K_A$被称为自适应控制增益。
 
-![Inverse Queuing_FIG_4](C:\Users\12396\Desktop\文章\NJUST_paper\image\Inverse Queuing_FIG_4.png)
+![Inverse Queuing_FIG_4](image\Inverse Queuing_FIG_4.png)
 
 <center>图4 从参考模型映射到分析队列模型</center>
 
@@ -166,19 +166,19 @@ $$
 
 &emsp; &emsp;当到达率大$\lambda$于总处理能力$\mu$时,系统是不稳定的，并且公式(2)(3)(4)是不成立的。因此，直接根据$e_k$找$N_k$是不合适的。在不稳定的状态下，实际队列长度$L$大于$L_s(N_k,\lambda,\mu)$，并且不断增加，直到到达允许的最大等待连接数，这代表了阻断程度。因此，采用基于排队长度的不稳定状态供应方法 ，正如算法3所示。首先，如果$n_s > n^r_{m_k}$，这意味着$n_s$是不符合SLA的较大容器数量，用$n_s$替换 $n^r_{m_k}$。给定$N_k$个容器，根据公式(5)，下一步的理论响应时间$y_{k+1}$是当前响应时间$y_k$和排队模型的期望响应时间$W_s(N_k,\lambda,\mu)$的加权。使用迭代搜查来寻找基于$[\frac{\lambda}{\mu}]$使$y_{k+1}>W_{sla}$的容器的最小数量$N_k$。每一步都应该至少增加一个新的容器。每一秒钟，在此步新添加的$N_k - N_{k-1}$个容器可以处理附加的$\mu \times (N_k - N_{k-1})$个请求。为了确保通过在$N_k - N_{k-1}$个容器上处理$\mu \times(N_k - N_{k-1}) \times T_r$个附加请求，实际队列长队$L_r$能够在$T_r$秒减少到理论排队长度$L_s$，$N_k$逐步减少。较大的$T_r$会更快减少排队长度。最终，$u_k$被更新，以保证在下一个控制步骤中，如果没有输出误差，$N_k$个容器人能够被租用。
 
-![Inverse Queuing_Algorithm3](C:\Users\12396\Desktop\文章\NJUST_paper\image\Inverse Queuing_Algorithm3.png)
+![Inverse Queuing_Algorithm3](image\Inverse Queuing_Algorithm3.png)
 
 ### 4.6 基于逆排队模型的反馈控制正式描述
 
 &emsp;&emsp;在算法4中正式描述了基于逆排队模型的反馈控制。首先，使用历史数据对性能模型进行分析。在排队系统中，当实际排队长队$L_r$大于理论排队长度$L_s(N_k,\lambda,\mu)$，系统是不稳定的。给定到达率$\lambda$，为使系统稳定，至少需要$N = [\frac{\lambda}{\mu}]$个容器。$N$个容器的理论响应时间是$W_s(N,\lambda,\mu)$，这叫做最大稳定响应时间。当$y_k$大于最大稳定响应时间时，系统也是不稳定的。因为在排队模型和实际系统之间仍是由偏差的，即使系统是稳定的，排队长度也可能偶尔比理论上的排队长度大一点儿。上述不稳定的标准过于严格，容易导致稳定和不稳定控制之间的频繁切换，使得系统波动很大。因此，只有当$L_r$大于$L_s(N_k,\lambda,\mu)$的$α$倍或$L_r$大于$W_(N,\lambda,\mu)$的$β$倍时，系统才被认定为不稳定的。给出更大的$α$和$β$意味着判断系统不稳定的标准更加宽松。如果系统是不稳定的，QLP就会被调用。否则，调用ARML来霍格一个参考模型$m'_k$或者获得一个样本$N_k$。如果$m'_k \neq null$，使用公式(16)来获取$u_k$，并且使用逆排队模型来获取实际控制动作$N_k$。最终，分配个Web系统的容器数量被调整为$N_k$。
 
-![Inverse Queuing_Algorithm4](C:\Users\12396\Desktop\文章\NJUST_paper\image\Inverse Queuing_Algorithm4.png)
+![Inverse Queuing_Algorithm4](image\Inverse Queuing_Algorithm4.png)
 
 ## 5 性能评估
 
 &emsp;&emsp;我们提出的基于逆排队模型的反馈控制作为Kubernetes的一个用户及调度来实现。与现有算法在真实的Kubernetes集群上比较，它位于四台物理机上，配置为 6~12个虚拟CPU核心和 8~16GB内存。Kubernetes集群包括一个Master节点和4个Worker节点。一个计算斐波那契数的服务被作为测试平台，该服务的输入是生成的斐波那契数列的长度，它从每个请求的区间中随机选择。$W_{sla}$时0.1秒。nginx-ingress-controller使用指数加权移动平均(EWMA)作为负载平衡算法，将服务请求重定向到不同的容器。每个请求的响应时间都存储在nginx的日志中。ASC通过Kubernetes的java客户端接口(JCI)读取日志，获得每分钟的平均响应时间。 排队长度和请求到达率是通过使用http protocal读取nginx的状态信息获得的。由ASC生成的Pod弹性伸缩命令通过JCI改变部署的副本的值，发送到Kubernetes。nginx的连接超时时间是10秒，并且每个容器允许的最大连接数是500。维基百科的用户访问痕迹，如图5所示，与Web系统的常见峰值和谷值 是通过JMeter来生成请求。
 
-![Inverse Queuing_FIG_5](C:\Users\12396\Desktop\文章\NJUST_paper\image\Inverse Queuing_FIG_5.png)
+![Inverse Queuing_FIG_5](image\Inverse Queuing_FIG_5.png)
 
 <center>图5 维吉保科访问痕迹的请求到达率</center>
 
